@@ -1,187 +1,195 @@
-# Forkify Project
+# 🍴 Forkify — Engineering-Focused JavaScript Project
 
-A dynamic recipe search and management application built while demonstrating modern JavaScript concepts. This project showcases API integration, MVC architecture, modular code organization, and DOM-driven UI updates.
+A recipe search and management application built with **vanilla JavaScript**, focusing on **state-driven data flow**, **MVC architecture**, and **maintainable UI updates**.
 
-## Repository
+This project is used as an **engineering showcase**, emphasizing *design decisions*, *trade-offs*, and *data flow clarity* rather than framework usage.
 
-This repository contains the Forkify project, a modular JavaScript application following the MVC pattern.
+👉 **Live Demo**: [https://forkify-sturartchen.netlify.app/](https://forkify-sturartchen.netlify.app/)
 
-- **Repository path:** `https://github.com/lit-cup/javascript-practices/tree/65b7caabf7b5df5850726c0c2ccbf4490bf76896/Project7_forkify/Guide-forkify`
-- Update this section with the correct GitHub URL once known.
+---
 
-## Features
+> **Attribution & Scope**
+>
+> This project was originally based on the Forkify project from  
+> “The Complete JavaScript Course” by Jonas Schmedtmann.
+>
+> I used the course as a baseline, then focused on:
+> - restructuring the data flow
+> - making design decisions explicit
+> - handling edge cases beyond the course scope
+>
+> The goal of this repository is to demonstrate how I reason about frontend architecture and trade-offs.
 
-- Built with **MVC architecture** for clean separation of logic.
-- Fetches recipes from a public API with **async/await**.
-- Users can search recipes, view details, adjust servings, bookmark favorites, and sort search results within the current page.
-- Clean modular structure: controllers, models, and views split by responsibility.
-- Reusable UI components and update mechanisms.
+---
 
-## Architecture Overview (MVC)
+## ✨ Why This Project Matters
 
-- **Model**
+Most recipe apps look similar on the surface.
+What makes this project different is **how problems are modeled and solved**:
 
-  - Handles API calls, data transformation, bookmarking logic, sort logic, and application state.
+* Clear separation of concerns using **MVC**
+* A centralized application **state** instead of scattered DOM state
+* Explicit handling of **edge cases** in UI updates
+* Decisions made with **stability and maintainability** in mind
 
-- **View**
+This repository reflects how I approach frontend problems in a production-oriented way.
 
-  - Responsible for rendering UI components (recipe view, search results, bookmarks, pagination, ingredients, etc.).
-  - Includes reusable parent class with `render()`, `update()`, and error handling.
+---
 
-- **Controller**
+## 🧠 Beyond the Tutorial (Engineering Decisions)
 
-  - Connects user actions with model updates and view rendering.
-  - Controls recipe loading, search results, pagination, serving updates, bookmarks, sort search result.
+Although this project started from a course tutorial, I went beyond the baseline by making several explicit engineering decisions around data flow, responsibility boundaries, and UI stability.
 
-## Project Structure
+Key areas I extended beyond the tutorial include:
+
+- **Centralized state ownership in the Model (MVC contract)**
+
+    The Model owns all application state (recipe, search, bookmarks, filters), while the Controller coordinates user intent and view updates.
+    This makes the data flow predictable and easier to debug without relying on implicit DOM state.
+
+- **Page-based data enrichment before transformation**
+
+    Because the search API does not provide all required fields, I introduced a page-based enrichment step to fetch additional data only for the visible results.
+    After enrichment, sorting and filtering are treated as pure transformations on the enriched data.
+
+- **Update vs render strategy based on DOM compatibility**
+   
+    The lightweight update() strategy assumes a compatible DOM node list (e.g. sorting).
+    When filtering breaks this assumption by changing list length, I intentionally fall back to guarded updates or re-render behavior to keep the UI stable without overengineering.
+---
+
+## 🧠 Core Engineering Highlights
+
+* **MVC Architecture**
+
+    * Model manages application state, API calls, and data normalization
+    * View layer focuses purely on rendering and DOM updates
+    * Controller orchestrates user interactions and data flow
+
+* **State-Driven Data Flow**
+
+    * Single source of truth for recipes, search results, bookmarks, and UI state
+    * UI is derived from state instead of imperative DOM manipulation
+
+* **Predictable UI Updates**
+
+    * Reusable base `View` class with `render()` and `update()` methods
+    * Designed to minimize unnecessary re-renders while keeping logic readable
+
+* **Intentional Scope Control**
+
+    * No framework abstractions added
+    * Complexity kept explicit to make data flow and decisions transparent
+
+---
+
+## 🧩 Features
+
+* Search recipes from a public API
+* View recipe details and ingredients
+* Update servings with automatic ingredient recalculation
+* Paginated search results
+* Bookmark recipes (persisted via `localStorage`)
+* Upload custom recipes
+* Sort search results **after async resolution** (edge-case handled explicitly)
+
+---
+
+## 🏗 Architecture Overview (MVC)
+
+### Model
+
+* API communication and async data fetching
+* Centralized application state
+* Bookmark persistence and sorting logic
+
+### View
+
+* Dedicated view classes per UI responsibility
+* Shared base `View` class for rendering, updating, and error handling
+* DOM updates optimized for predictable behavior
+
+### Controller
+
+* Connects user actions to state changes
+* Coordinates between Model and View
+* Keeps side effects isolated from rendering logic
+
+---
+
+## 📂 Project Structure
 
 ```
 Guide-forkify/
- ├── controller.js       # Main orchestrator connecting Model & Views
- ├── model.js            # State management + API logic
- ├── config.js           # API URLs, timeout settings
+ ├── controller.js        # Orchestrates Model <-> View
+ ├── model.js             # State management + API logic
+ ├── config.js            # API endpoints and configuration
  ├── views/
- │    ├── addRecipeView.js
- │    ├── bookmarksView.js
- │    ├── helpers.js          # AJAX abstraction, timeout wrapper
- │    ├── paginationView.js
- │    ├── previewView.js      # search result items ui
+ │    ├── View.js         # Base view abstraction
  │    ├── recipeView.js
- │    ├── resultsView.js      # connect all search result items ui
+ │    ├── resultsView.js
+ │    ├── paginationView.js
+ │    ├── bookmarksView.js
  │    ├── searchView.js
  │    ├── sortView.js
- │    ├── updateIconsView.js
- │    └── View.js        # Base class for all views
+ │    └── addRecipeView.js
  ├── index.html
  └── ...
 ```
 
-## Major Functionality & Effects
-
-- **Load recipe**: Fetches recipe by ID → updates UI with spinner, error UI, or recipe content.
-- **Search recipes**: API call → stores results → paginated display.
-- **Pagination**: Navigates through pages without reloading data.
-- **Update servings**: Adjust ingredient quantities based on new serving size.
-- **Bookmarks**: Add/remove bookmarks + persist in localStorage.
-- **Upload recipe**: Allows user to add custom recipes into the system.
-- **Sort Search Result**: Allows user sort current result page by cooking time / servings. ensuring sorting occurs only after all asynchronous data has been resolved.
-
-## Installation
-
-```bash
-git clone https://github.com/lit-cup/javascript-practices/tree/65b7caabf7b5df5850726c0c2ccbf4490bf76896/Project7_forkify/Guide-forkify
-cd <project-folder>
-```
-
-## Usage
-
-Provide instructions on how to run or build your project.
-
-```bash
-# Example command
-npm install
-npm run dev
-```
-
-## Project Structure
-
-```
-/project-root
- ├── src
- ├── public
- ├── README.md
- └── ...
-```
-
-## Deployment (Netlify)
-
-This project is deployed on **Netlify**, allowing you to preview and interact with the live demo instantly.
-
-### Live Demo
-
-👉 **Demo URL:** `https://forkify-sturartchen.netlify.app/`
-
-### How Deployment Works
-
-- The project is built as a client-side JavaScript application.
-- Netlify automatically detects the HTML/CSS/JS setup.
-- No server configuration required — simply drag & drop your `dist` or project folder, or connect GitHub for auto‑deploy.
-
-### Deployment Steps (if you want to redeploy)
-
-1. Log into [Netlify](https://www.netlify.com/).
-2. Choose **Add new site → Deploy manually** or **Import from GitHub**.
-3. Upload your build folder or select your repository.
-4. Wait for Netlify to finish processing.
-5. Your site goes live immediately with a unique URL.
-
 ---
 
-## License
+## 🧪 Engineering Note — Update vs Render (Filter / Sort Edge Case)
 
-This project is licensed under the **MIT License**.
+While implementing search result filtering and sorting, I encountered an edge case related to the `update()` method.
 
-```
-MIT License
+The `update()` logic assumes a **stable DOM structure** and performs a diff based on index comparison.
+This works well for **sorting**, where elements are reordered but not removed.
 
-Copyright (c) 2026 Yi-Ting (Stuart) Chen
+However, **filtering changes the DOM structure**, causing some existing nodes to no longer exist.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+To prevent unsafe DOM mutations, I added a guard condition:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-This project is inspired by the course “The Complete JavaScript Course 2025”
-by Jonas Schmedtmann.
-```
-
-## Author
-
-Created by **Yi-Ting (Stuart) Chen** — Aiming to master JavaScript, build solid web applications, and prepare for remote frontend roles.
-
-GitHub: [https://github.com/stuartchendev](https://github.com/stuartchendev)
-
-# 📘 README ｜ Engineering Note
-
-### ⚙️ Update vs Render Strategy (Filter / Sort Edge Case)
-
-During development, I encountered an edge case related to the `update()` method after applying filters to the search results.
-
-The `update()` method is designed to perform a DOM diff based on **index comparison**, assuming that the DOM structure remains stable between renders.
-
-This assumption holds true for operations like **sorting**, where the number of items stays the same and only the order changes.
-
-However, **filtering changes the DOM structure** by removing elements.
-
-As a result, some existing DOM nodes no longer exist, which can cause `curEl` to be `undefined` during the update process.
-
-To prevent unsafe DOM mutations, I added guard conditions to ensure that updates only occur when the corresponding DOM node exists:
-
-```jsx
-if (!newEl.isEqualNode(curEl) && curEl) {
+```js
+if (curEl && !newEl.isEqualNode(curEl)) {
   curEl.setAttribute(attr.name, attr.value);
 }
 ```
 
 This ensures that:
 
-- `update()` safely becomes a no-op when the DOM structure is no longer compatible
-- Filtered search results do not cause runtime errors
-- Sorting behavior remains unaffected
+* `update()` safely becomes a no-op when DOM structure is incompatible
+* Filtering does not introduce runtime errors
+* Sorting behavior remains predictable
 
-This solution prioritizes **stability and minimal side effects**, while keeping the update logic lightweight and predictable.
+**Trade-off**:
+A key-based diff or centralized UI state could handle this more generally, but was intentionally avoided to keep the project focused and explicit.
 
-> Note: For more complex UI state transformations, a key-based diff or centralized state management would be required. This was intentionally avoided to keep the project scope focused.
+---
+
+## 🚀 Getting Started
+
+```bash
+git clone <repo-url>
+cd forkify-app
+npm install
+npm run dev
+```
+
+---
+
+## 🌐 Deployment
+
+* Deployed as a client-side JavaScript application on **Netlify**
+* No server-side configuration required
+* Automatic deployment via GitHub integration
+
+---
+
+## 📌 Why I Keep This Project Vanilla
+
+This project intentionally avoids frameworks to make **data flow, state responsibility, and UI updates explicit**.
+
+The goal is not to build faster —
+but to build in a way that is **easy to reason about, debug, and explain**.
+
