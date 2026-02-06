@@ -14,7 +14,7 @@ class SearchView{
     }
 
     addHandlerSearch(controlSearchResults){
-        // handle the submit event of serach, than call controlSearchResults()
+        // handle the submit event of search, then call controlSearchResults()
         this._parentEl.addEventListener('submit', function(e){
             e.preventDefault();
             controlSearchResults();

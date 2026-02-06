@@ -1,4 +1,3 @@
-// import { result } from "lodash-es";
 import {
   API_URL,
   API_KEY,
@@ -8,9 +7,7 @@ import {
   SORT_OPTION_SA,
   SORT_OPTION_SD,
 } from './config';
-// import { getJson, sendJson } from "./view/helpers";
 import { AJAX } from './view/helpers';
-// import recipeView from "./view/recipeView";
 
 // state: store all data we need
 export const state = {
@@ -48,21 +45,12 @@ const createRecipeObject = function (data) {
     ingredients: recipe.ingredients,
     ...(recipe.key && { key: recipe.key }),
   };
-
-  // tricky way to conditionally add object property
-  // ...(recipe.key && {key: recipe.key})
 };
 
 // this model not will return anything keep it private
 export const loadRecipe = async function (id) {
   try {
     const data = await AJAX(`${API_URL}/${id}?key=${API_KEY}`);
-
-    // const res = await fetch(`${API_URL}/${id}`);
-    // const data = await res.json();
-    // console.log(data);
-    // // make better error message
-    // if(!res.ok) throw new Error(`${data.message} (${res.status})`);
 
     // set recipe object with createRecipeObject function
     state.recipe = createRecipeObject(data);
@@ -72,9 +60,6 @@ export const loadRecipe = async function (id) {
       state.recipe.bookmarked = true;
     else state.recipe.bookmarked = false;
   } catch (error) {
-    // temp error handling
-    // console.log(`${error}!!!!!!!!!!`);
-
     // to make error come from view part
     throw error;
   }
@@ -100,10 +85,8 @@ export const loadSearchResults = async function (query) {
     // init state.search.page to page 1 when everytime new search query
     state.search.page = 1;
 
-    // console.log(state.search.results);
   } catch (error) {
-    // temp error handling
-    // console.log(`${error}!!!!!!!!!!`);
+
     // to make error come from view part
     throw error;
   }
@@ -119,7 +102,7 @@ export const getSearchResultPage = function (page = state.search.page) {
   return state.search.results.slice(start, end); // 1 page per 10 results
 };
 
-// Done: sort enrich currpage search results by cookingtime
+
 // NOTE:
 // Data: all search result, currpage result, resultsPerPage
 // flow:

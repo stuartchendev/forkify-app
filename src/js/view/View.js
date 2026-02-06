@@ -3,16 +3,6 @@ import icons from '../../img/icons.svg?url';
 export default class View {
   _data;
 
-  // rwite jsdoc documentation
-  /**
-   * Render the received object to the DOM
-   * @param {Object|Object[]} data The data to be rendered (e.g. recipe)
-   * @param {boolean} [render=true] If false, create markup string instead of rendering to the DOM
-   * @returns {undefined|string} A markup string is returned if render=false
-   * @this {Object} View instance
-   * @author Stuart Chen
-   */
-
   render(data, render = true) {
     // check if data is null, undefine, not array, array length = 0, than render error
     if (!data || (Array.isArray(data) && data.length === 0))
@@ -27,20 +17,24 @@ export default class View {
     this._clear();
     this._insertMarkup(markup);
   }
+
   // only update changed part not re-render all for recipe ingredients update: DOM select (UI diffing)
   update(data) {
     this._data = data;
+
     // generate new markup with new data
     const newMarkup = this._generalMarkup();
-    // transfrom new markup string to real DOM object
+
+    // transform new markup string to real DOM object
     const newDOM = document.createRange().createContextualFragment(newMarkup);
-    // transfrom recipe(new, current) attribute node list to array
+
+    // transform recipe(new, current) attribute node list to array
     const newElements = Array.from(newDOM.querySelectorAll('*'));
     const curElements = Array.from(this._parentElement.querySelectorAll('*'));
+
     // compare newElements and curElements two array node by node
     newElements.forEach((newEl, i) => {
       const curEl = curElements[i];
-      // console.log(curEl, newEl.isEqualNode(curEl));
 
       // change text if node、text different for only update ingredients text content
       if (
@@ -49,7 +43,6 @@ export default class View {
         curEl
       ) {
         curEl.textContent = newEl.textContent;
-        // console.log(newEl.firstChild.nodeValue.trim());
       }
 
       // change attribute if node different for servings update from new servings data attribute
@@ -67,7 +60,7 @@ export default class View {
   }
 
   _insertMarkup(markup) {
-    // console.log('insert', this._parentElement);
+
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 

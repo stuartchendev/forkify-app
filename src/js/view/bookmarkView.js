@@ -10,7 +10,6 @@ class BookmarksView extends View {
     _message = '';
 
     _generalMarkup(){
-        // console.log(this._data);
         // store all bookmark string from (previewView extends View) render method with render = false to return markup string
         // with preview UI for each bookmark item then return join() all string to one string, preparing for update/ render method
         return this._data.map(bookmark => previewView.render(bookmark, false)).join('');
