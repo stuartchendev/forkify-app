@@ -4,7 +4,7 @@
   border-radius: 10rem;
   border: none;
   text-transform: uppercase;
-  color: #fff;
+  color: inherit;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -83,7 +83,7 @@
   }
 
   &:hover {
-    color: $color-grad-2;
+    color: inherit;
     background-color: $color-grey-light-2;
   }
 
@@ -102,7 +102,7 @@
   transition: all 0.2s;
   justify-self: flex-end;
   &:hover {
-    color: $color-grad-2;
+    color: inherit;
     background-color: $color-grey-light-2;
   }
 }
@@ -132,7 +132,7 @@
   svg {
     height: 2.5rem;
     width: 2.5rem;
-    fill: #fff;
+    fill: #e07a3f;
   }
 }
 
@@ -155,12 +155,12 @@
   }
 
   &:hover svg {
-    fill: $color-grad-2;
+    fill: inherit;
     transform: translateY(-1px);
   }
 
   &:active svg {
-    fill: $color-grad-2;
+    fill: inherit;
     transform: translateY(0);
   }
 
