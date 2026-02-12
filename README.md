@@ -1,9 +1,8 @@
-# 🍴 Forkify — Engineering-Focused JavaScript Project
-
 >This project originated from the Forkify application in Jonas Schmedtmann’s JavaScript course.
 > I extended and refactored the architecture to emphasize centralized state management, modular MVC separation, and improved API handling flow.
 
 
+# 🍴 Forkify — Engineering-Focused JavaScript Project
 
 A recipe search and management application built with **vanilla JavaScript**, focusing on **state-driven data flow**, **MVC architecture**, and **maintainable UI updates**.
 
