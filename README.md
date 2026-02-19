@@ -10,19 +10,7 @@ This project is used as an **engineering showcase**, emphasizing *design decisio
 
 👉 **Live Demo**: [https://forkify-sturartchen.netlify.app/](https://forkify-sturartchen.netlify.app/)
 
----
-
-> **Attribution & Scope**
->
-> This project was originally based on the Forkify project from  
-> “The Complete JavaScript Course” by Jonas Schmedtmann.
->
-> I used the course as a baseline, then focused on:
-> - restructuring the data flow
-> - making design decisions explicit
-> - handling edge cases beyond the course scope
->
-> The goal of this repository is to demonstrate how I reason about frontend architecture and trade-offs.
+![forkifyPreviewFullPage2.png](forkifyPreviewFullPage2.png)
 
 ---
 
